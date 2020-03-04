@@ -12,16 +12,41 @@ type event struct {
 }
 
 func main(){
-	//Create Requests array
-	campaigns := make([]event, 3)
-
-	//Populate array
-	campaigns[0] = event{0,  4, []string{"apple sale"}}
-	campaigns[1] = event{2,  5, []string{"banna sale"}}
-	campaigns[2] = event{3, 10, []string{"car sale"}}
-	//campaigns[3] = event{1,  7, []string{"dog adoption"}}
-	//campaigns[4] = event{8, 11, []string{"elderly community day"}}
-	//campaigns[5] = event{0,  4, []string{"food function"}}
+	//Create Events
+	campaigns := []event{
+		event{
+			start: 0,
+			end: 4,
+			groups: []string{"apple sale"},
+		},
+		event{
+			start: 2,
+			end: 5,
+			groups: []string{"banna sale"},
+		},
+		event{
+			start: 3,
+			end: 10,
+			groups: []string{"car sale"},
+		},
+		/*
+		event{
+			start: 1,
+			end: 7,
+			groups: []string{"dog adoption"},
+		},
+		event{
+			start: 8,
+			end: 11,
+			groups: []string{"elderly community day"},
+		},
+		event{
+			start: 0,
+			end: 4,
+			groups: []string{"food function"},
+		},
+		*/
+	}
 
 	overlaps := findOverlaps(campaigns)
 
