@@ -2,10 +2,7 @@ package main
 
 import (
 	"fmt"
-	// "reflect"
 )
-
-// type m = map[string]interface{}
 
 type event struct {
 	start int
@@ -111,12 +108,6 @@ func recursiveOverlaps(events []event, overlaps []event) []event {
 			}
 		}
 	}
-
-	// for _, c := range events {
-	// 	fmt.Printf("Campaign %v\nStart:%v\nEnd:%v\n\n", c.groups, c.start, c.end)
-	// }
-
-	// fmt.Printf("Overlap between event 1&2? %v", overlapExists(events[0],events[0]))
 
 	// literalEvent := []event{ event{len(events),0,map[string]bool{"Error: Nil Case Reached. Length of Events in start of object.":true}} }
 	return nil
