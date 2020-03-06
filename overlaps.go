@@ -38,7 +38,7 @@ func main(){
 			start: 11,
 			end: 20,
 			groups: map[string]bool{
-				"car sale": true,
+				"pickle festival": true,
 			},
 		},
 		/*
@@ -74,12 +74,18 @@ func recursiveOverlaps(events []event, overlaps []event) []event {
 	//Throw that event away and repeat this process.
 	//base case: events array is of length 2. return comparisonEvent
 
+	// fmt.Printf("Events slice before pop: %v\n", events)
 	//pop comparisonEvent (first item in array)
 	comparisonEvent, events := events[len(events)-1], events[:len(events)-1]
+	// fmt.Printf("Events slice after pop: %v\n", events)
+	fmt.Printf("comparisonEvent: %v\n", comparisonEvent )	
+	
 
-	if len(events) == 0 {
+	if len(events) == 0 {//base case
 		return overlaps;
 	}
+
+	//Find overlaps
 	for _, eventItem := range events {
 
 		if 	overlapExists(comparisonEvent, eventItem) {
@@ -92,9 +98,6 @@ func recursiveOverlaps(events []event, overlaps []event) []event {
 				//add to overlaps
 				overlaps = append( overlaps, event{eventItem.start, eventItem.end, groups} )
 
-				//call the function again
-				return recursiveOverlaps(events, overlaps)
-
 			} else {
 
 				//append names and make it unique
@@ -103,60 +106,22 @@ func recursiveOverlaps(events []event, overlaps []event) []event {
 				//add to overlaps
 				overlaps = append( overlaps, event{eventItem.start, comparisonEvent.end, groups } )
 
-				return recursiveOverlaps(events, overlaps)
-
 			}
 		}
 	}
 
+
 	// literalEvent := []event{ event{len(events),0,map[string]bool{"Error: Nil Case Reached. Length of Events in start of object.":true}} }
-	return nil
+
+	//call function again if basecase not met.
+	return recursiveOverlaps(events, overlaps)
 }
 
 func overlapExists(a event, b event) bool {
-	if a.end > b.start && !groupsEqual(a.groups, b.groups) {
-		fmt.Printf("========================\n")
-		fmt.Printf("End of \"a\" before start of \"b\"? %v\n", true)
-		fmt.Printf("a & b groups the same? %v\n", false)
-		fmt.Printf("a groups: %v\n", a.groups)
-		fmt.Printf("b groups: %v\n", b.groups)
-		fmt.Printf("========================\n")
+	if a.end > b.start {
+		return true
 	}
-
-
-	fmt.Printf("%v\n", a)
-	fmt.Printf("%v\n", b)
-
-	if a.start <= b.start {
-		fmt.Printf("Start of a before start of b? %v\n", true)
-	} else {
-		fmt.Printf("%v !<= %v\n", a.start, b.start)
-	}
-	return true
-}
-
-func groupsEqual(a map[string]bool, b map[string]bool) bool {
-	aIsInB := true
-	bIsInA := true
-
-	//are all items in a in b?
-	for key, _ := range a {
-		if !b[key]{ //if I get a false value then all values in a are not in b
-			aIsInB = false
-		}
-	}
-
-	//are all items in b in a?
-	for key, _ := range b {
-		if !a[key]{ //if I get a false value then all values in b are not in a
-			bIsInA = false
-		}
-	}
-
-	isEqual := aIsInB && bIsInA // true if both contain all elements of eachother
-	return isEqual
-
-
+	return false
 }
 
 // Given two maps, recursively merge right into left, NEVER replacing any key that already exists in left
