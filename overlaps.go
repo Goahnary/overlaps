@@ -34,6 +34,7 @@ func main(){
 				"car sale": true,
 			},
 		},
+		/*
 		event{
 			start: 11,
 			end: 20,
@@ -62,6 +63,17 @@ func main(){
 				"food function": true,
 			},
 		},
+		*/
+	}
+
+	fmt.Printf("\n-------------\n| Events    |\n-------------\n\n")
+
+	for _, c := range campaigns {
+		fmt.Printf("Name: ")
+		for name, _ := range c.groups {
+			fmt.Printf("%v, ", name)
+		}
+		fmt.Printf("\nStart:%v\nEnd:%v\n\n", c.start, c.end)
 	}
 
 	overlaps := recursiveOverlaps(campaigns, make([]event, 0))
@@ -69,23 +81,21 @@ func main(){
 	fmt.Printf("\n-------------\n| Overlaps  |\n-------------\n\n")
 
 	for _, c := range overlaps {
-		fmt.Printf("Campaign %v\nStart:%v\nEnd:%v\n\n", c.groups, c.start, c.end)
+		fmt.Printf("Events: ")
+		for name, _ := range c.groups {
+			fmt.Printf("%v, ", name)
+		}
+		fmt.Printf("\nStart:%v\nEnd:%v\n\n", c.start, c.end)
 	}
 }
 
 func recursiveOverlaps(events []event, overlaps []event) []event {
-	//Remove event, that we shall call "comparisonEvent", and compare to the rest of the events to find overlaps.
-	//Throw that event away and repeat this process.
-	//base case: events array is of length 2. return comparisonEvent
 
-	// fmt.Printf("Events slice before pop: %v\n", events)
 	//pop comparisonEvent (first item in array)
 	comparisonEvent, events := events[len(events)-1], events[:len(events)-1]
-	// fmt.Printf("Events slice after pop: %v\n", events)
-	fmt.Printf("\ncomparisonEvent: %v\n", comparisonEvent )
 	
 
-	if len(events) == 0 {//base case
+	if len(events) == 0 {//check base case
 		return overlaps;
 	}
 
@@ -115,10 +125,6 @@ func recursiveOverlaps(events []event, overlaps []event) []event {
 		}
 	}
 
-
-	// literalEvent := []event{ event{len(events),0,map[string]bool{"Error: Nil Case Reached. Length of Events in start of object.":true}} }
-
-	//call function again if basecase not met.
 	return recursiveOverlaps(events, overlaps)
 }
 
