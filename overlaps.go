@@ -41,23 +41,27 @@ func main(){
 				"pickle festival": true,
 			},
 		},
-		/*
 		event{
 			start: 1,
 			end: 7,
-			groups: []string{"dog adoption"},
+			groups: map[string]bool{
+				"dog adoption": true,
+			},
 		},
 		event{
 			start: 8,
 			end: 11,
-			groups: []string{"elderly community day"},
+			groups: map[string]bool{
+				"elderly community day": true,
+			},
 		},
 		event{
 			start: 0,
 			end: 4,
-			groups: []string{"food function"},
+			groups: map[string]bool{
+				"food function": true,
+			},
 		},
-		*/
 	}
 
 	overlaps := recursiveOverlaps(campaigns, make([]event, 0))
