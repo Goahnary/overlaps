@@ -78,7 +78,7 @@ func recursiveOverlaps(events []event, overlaps []event) []event {
 	//pop comparisonEvent (first item in array)
 	comparisonEvent, events := events[len(events)-1], events[:len(events)-1]
 	// fmt.Printf("Events slice after pop: %v\n", events)
-	fmt.Printf("comparisonEvent: %v\n", comparisonEvent )	
+	fmt.Printf("\ncomparisonEvent: %v\n", comparisonEvent )
 	
 
 	if len(events) == 0 {//base case
@@ -88,24 +88,25 @@ func recursiveOverlaps(events []event, overlaps []event) []event {
 	//Find overlaps
 	for _, eventItem := range events {
 
-		if 	overlapExists(comparisonEvent, eventItem) {
+		overlaping, overlapCase := overlapExists(comparisonEvent, eventItem)
 
-			if comparisonEvent.end > eventItem.end { //comparisonEvent encompasses eventItem
+		if 	overlaping {
 
-				//append names and make it unique
-				groups := mergeKeys(comparisonEvent.groups, eventItem.groups)
+			groups := mergeKeys(comparisonEvent.groups, eventItem.groups)
 
-				//add to overlaps
-				overlaps = append( overlaps, event{eventItem.start, eventItem.end, groups} )
+			switch overlapCase {
+			
+				case 1:
+					overlaps = append( overlaps, event{eventItem.start, eventItem.end, groups} )
 
-			} else {
+				case 2:
+					overlaps = append( overlaps, event{comparisonEvent.start, comparisonEvent.end, groups} )
 
-				//append names and make it unique
-				groups := mergeKeys(comparisonEvent.groups, eventItem.groups)
+				case 3:
+					overlaps = append( overlaps, event{eventItem.start, comparisonEvent.end, groups} )
 
-				//add to overlaps
-				overlaps = append( overlaps, event{eventItem.start, comparisonEvent.end, groups } )
-
+				case 4:
+					overlaps = append( overlaps, event{comparisonEvent.start, eventItem.end, groups} )
 			}
 		}
 	}
@@ -117,8 +118,38 @@ func recursiveOverlaps(events []event, overlaps []event) []event {
 	return recursiveOverlaps(events, overlaps)
 }
 
-func overlapExists(a event, b event) bool {
-	if a.end > b.start {
+func overlapExists(a event, b event) (bool, int) {
+	
+	if between(a.start, a.end, b.start) && between(a.start, a.end, b.end) {
+	// [----------]
+	//    [-----]
+		return true, 1
+	}
+
+	if between(b.start, b.end, a.start) && between(b.start, b.end, a.end) {
+	//    [-----]
+	// [----------]
+		return true, 2
+	}
+
+	if between(a.start, a.end, b.start) {
+	// [----------]
+	//    [--------------
+		return true, 3
+	}
+
+	if between(a.start, a.end, b.end) {
+	//            [----------]
+	//    --------------]
+		return true, 4
+	}
+
+	return false, 0
+}
+
+func between(a, b, c int) bool {
+	//is c between a and b?
+	if c > a && c < b {
 		return true
 	}
 	return false
