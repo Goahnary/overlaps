@@ -34,7 +34,6 @@ func main(){
 				"car sale": true,
 			},
 		},
-		/*
 		event{
 			start: 11,
 			end: 20,
@@ -63,7 +62,6 @@ func main(){
 				"food function": true,
 			},
 		},
-		*/
 	}
 
 	fmt.Printf("\n-------------\n| Events    |\n-------------\n\n")
@@ -104,9 +102,14 @@ func recursiveOverlaps(events []event, overlaps []event) []event {
 
 		overlaping, overlapCase := overlapExists(comparisonEvent, eventItem)
 
-		if 	overlaping {
+		if overlaping {
 
-			groups := mergeKeys(comparisonEvent.groups, eventItem.groups)
+			trashMap := make(map[string]bool)
+			for key, value := range comparisonEvent.groups {
+				trashMap[key] = value
+			}
+			
+			groups := mergeKeys(trashMap, eventItem.groups)
 
 			switch overlapCase {
 			
@@ -165,7 +168,7 @@ func between(a, b, c int) bool {
 	return false
 }
 
-// Given two maps, recursively merge right into left, NEVER replacing any key that already exists in left
+// Given two maps merge right into left
 func mergeKeys(left, right map[string]bool) map[string]bool {
     for key, rightVal := range right {
         left[key] = rightVal
